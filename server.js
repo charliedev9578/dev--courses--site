@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import colors from 'colors';
 import bodyParser from 'body-parser'
 import connectDB from './config/db.js';
+import bootcampRouter from './routes/bootcamps.js';
 
 dotenv.config({ path: './config/config.env' });
 
@@ -18,6 +19,8 @@ app.use(bodyParser.json());
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+app.use('/api/v1/bootcamps' , bootcampRouter);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
