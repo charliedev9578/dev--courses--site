@@ -7,6 +7,7 @@ import asyncHandler from '../middleware/async.js';
 //@access   Public
 export const getBootcamps =  asyncHandler(async (req , res , next) => {
     const bootcamps = await Bootcamp.find();
+    console.log(process.env.GEOCODER_API_KEY);
     res.status(200).json({
         success: true,
         count: bootcamps.length,

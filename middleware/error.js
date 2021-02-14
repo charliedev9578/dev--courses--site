@@ -4,7 +4,7 @@ const errorHandler = async (err , req , res , next) => {
     let error = { ...err };
 
     error.message = err.message;
-    // console.log(err.errors);
+    console.log(err);
 
     if(err.name === 'CastError') {
         const message = `There is no resource with id of ${err.value}`;
