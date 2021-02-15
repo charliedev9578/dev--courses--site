@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import morgan from 'morgan';
 import colors from 'colors';
 import bodyParser from 'body-parser'
@@ -8,7 +8,7 @@ import connectDB from './config/db.js';
 import bootcampRouter from './routes/bootcamps.js';
 import errorHandler from './middleware/error.js';
 
-dotenv.config({ path: './config/config.env' });
+// dotenv.config({ path: './config/config.env' });
 
 connectDB();
 

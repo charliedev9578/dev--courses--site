@@ -7,8 +7,5 @@ const options = {
     formatter: null
 };
 
-console.log(process.env.MONGO_URI);
-console.log(process.env.GEOCODER_PROVIDER);
-
 const geocoder = NodeGeocoder(options);
 export default geocoder
