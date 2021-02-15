@@ -17,7 +17,10 @@ export const getCourses = asyncHandler(async (req, res, next) => {
         courses = await Course.find({ bootcamp: req.params.bootcampId });
     }
     else {
-        courses = await Course.find();
+        courses = await Course.find().populate({
+            path: 'bootcamp' ,
+            select: 'name description'
+        });
     }
     res.status(200).json({
         success: true,

@@ -100,8 +100,12 @@ const BootcampSchema = new mongoose.Schema(
             type: Date,
             default: Date.now
         }
+    } ,
+    {
+        toJSON: { virtuals: true } ,
+        toObject: { virtuals: true}
     }
-)
+);
 
 BootcampSchema.pre('save' , function(next) {
     this.slug = slugify(this.name , { lower: true });
@@ -124,6 +128,18 @@ BootcampSchema.pre('save' , async function(next) {
     // Do not save address in DB
     this.address = undefined;
     next();
+});
+
+BootcampSchema.pre('remove' , async function(next) {
+    await this.model('Course').deleteMany({ bootcamp: this._id });
+    next();
+})
+
+BootcampSchema.virtual('courses' , {
+    ref: 'Course' ,
+    localField: '_id' ,
+    foreignField: 'bootcamp' ,
+    justOne: false
 });
 
 export default mongoose.model('Bootcamp' , BootcampSchema)

@@ -34,7 +34,10 @@ export const getBootcamps =  asyncHandler(async (req , res , next) => {
 
     query = query.skip(startIndex).limit(limit);
 
-    const bootcamps = await query;
+    const bootcamps = await query.populate({
+        path: 'courses' ,
+        select: 'title description'
+    });
 
     let pagination = {};
     if(startIndex > 0) {
