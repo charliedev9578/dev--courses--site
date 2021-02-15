@@ -6,6 +6,7 @@ import colors from 'colors';
 import bodyParser from 'body-parser'
 import connectDB from './config/db.js';
 import bootcampRouter from './routes/bootcamps.js';
+import courseRouter from './routes/courses.js';
 import errorHandler from './middleware/error.js';
 
 // dotenv.config({ path: './config/config.env' });
@@ -22,6 +23,7 @@ if(process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/bootcamps' , bootcampRouter);
+app.use('/api/v1/courses' , courseRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

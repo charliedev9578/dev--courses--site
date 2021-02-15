@@ -7,8 +7,11 @@ import {
     deleteBootcampById ,
     getBootcampsWithinRadius
 } from '../controllers/bootcamps.js';
+import courseRouter from './courses.js';
 
 const router = express.Router();
+
+router.use('/:bootcampId/courses' , courseRouter);
 
 router
     .route('/radius/:zipcode/:distance')
