@@ -12,7 +12,7 @@ const bootcamps = JSON.parse(fs.readFileSync(`./_data/bootcamps.json` , 'utf-8')
 
 const importData = async () => {
     try {
-        await Bootcamp.insertMany(bootcamps);
+        await Bootcamp.create(bootcamps);
         console.log('Data are fetched to the database'.green.bold.inverse);
         process.exit();
     } catch (error) {
