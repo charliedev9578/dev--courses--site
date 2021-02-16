@@ -9,6 +9,7 @@ import {
 
 import advancedResults from '../middleware/advancedResults.js';
 import Course from '../models/Course.js';
+import { protect } from '../middleware/auth.js';
 
 const router = express.Router({ mergeParams: true });
 
@@ -16,12 +17,12 @@ const router = express.Router({ mergeParams: true });
 router
     .route('/')
     .get(advancedResults(Course , { path: 'bootcamp' , select: 'name description' }) , getCourses)
-    .post(createCourse)
+    .post(protect , createCourse)
 
 router
     .route('/:id')
     .get(getCourseById)
-    .put(updateCourseById)
-    .delete(deleteCourseById);
+    .put(protect , updateCourseById)
+    .delete(protect , deleteCourseById);
 
 export default router;

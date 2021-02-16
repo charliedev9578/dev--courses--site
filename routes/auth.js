@@ -1,9 +1,16 @@
 import express from 'express';
 import {
     userRegister ,
-    userLogin
+    userLogin ,
+    getMe
 } from '../controllers/auth.js';
+import { protect } from '../middleware/auth.js';
+
 const router = express.Router();
+
+router
+    .route('/me')
+    .get(protect , getMe);
 
 router
     .route('/register')
