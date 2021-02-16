@@ -1,21 +1,26 @@
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import fs from 'fs'
 import colors from 'colors'
 import connectDB from './config/db.js'
 
-dotenv.config();
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+// dotenv.config();
 
 import Bootcamp from './models/Bootcamp.js';
 import Course from './models/Course.js';
+import User from './models/User.js';
 connectDB();
 
-const bootcamps = JSON.parse(fs.readFileSync(`./_data/bootcamps.json` , 'utf-8'));
-const courses = JSON.parse(fs.readFileSync(`./_data/courses.json` , 'utf-8'));
+const bootcamps = JSON.parse(fs.readFileSync(`${__dirname}/_data/bootcamps.json` , 'utf-8'));
+const courses = JSON.parse(fs.readFileSync(`${__dirname}/_data/courses.json` , 'utf-8'));
+const users = JSON.parse(fs.readFileSync(`${__dirname}/_data/users.json` , 'utf-8'));
 
 const importData = async () => {
     try {
         await Bootcamp.create(bootcamps);
         await Course.create(courses);
+        await User.create(users);
         console.log('Data are fetched to the database'.green.bold.inverse);
         process.exit();
     } catch (error) {
@@ -27,6 +32,7 @@ const deleteData = async () => {
     try {
         await Bootcamp.deleteMany();
         await Course.deleteMany();
+        await User.deleteMany();
         console.log('Data are deleted'.red.bold.inverse);
         process.exit();
     } catch (error) {

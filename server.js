@@ -3,11 +3,13 @@ import express from 'express';
 // import dotenv from 'dotenv';
 import fileupload from 'express-fileupload'
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser'
 import colors from 'colors';
 import bodyParser from 'body-parser'
 import connectDB from './config/db.js';
 import bootcampRouter from './routes/bootcamps.js';
 import courseRouter from './routes/courses.js';
+import authRouter from './routes/auth.js';
 import errorHandler from './middleware/error.js';
 
 // dotenv.config({ path: './config/config.env' });
@@ -26,6 +28,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -37,6 +40,7 @@ app.use(express.static(path.join(__dirname , 'public')));
 
 app.use('/api/v1/bootcamps' , bootcampRouter);
 app.use('/api/v1/courses' , courseRouter);
+app.use('/api/v1/auth' , authRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
