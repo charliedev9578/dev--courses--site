@@ -15,18 +15,15 @@ export const getCourses = asyncHandler(async (req, res, next) => {
             return next(new ErrorResponse(`There is no bootcamp with id of ${req.params.bootcampId}` , 404));
         }
         courses = await Course.find({ bootcamp: req.params.bootcampId });
-    }
-    else {
-        courses = await Course.find().populate({
-            path: 'bootcamp' ,
-            select: 'name description'
+        return res.status(200).json({
+            success: true,
+            count: courses.length,
+            data: courses
         });
     }
-    res.status(200).json({
-        success: true,
-        count: courses.length,
-        data: courses
-    });
+    else {
+        res.status(200).json(res.advancedResults);
+    }
 });
 
 //@desc     Get single courses
