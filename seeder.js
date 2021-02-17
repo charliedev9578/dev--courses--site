@@ -1,4 +1,5 @@
 // import dotenv from 'dotenv'
+import path from 'path';
 import fs from 'fs'
 import colors from 'colors'
 import connectDB from './config/db.js'

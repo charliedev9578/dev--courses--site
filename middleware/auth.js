@@ -24,3 +24,10 @@ export const protect = asyncHandler(async (req , res , next) => {
         return next(new ErrorResponse('Not authorized to access' , 401));
     }
 });
+
+export const authorize = (...roles) => (req , res , next) => {
+    if(!roles.includes(req.user.role)) {
+        return next(new ErrorResponse('Not authorized' , 403));
+    }
+    next();
+}

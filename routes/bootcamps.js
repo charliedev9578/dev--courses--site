@@ -9,7 +9,7 @@ import {
     uploadBootcampImage
 } from '../controllers/bootcamps.js';
 import courseRouter from './courses.js';
-import { protect } from '../middleware/auth.js';
+import { protect , authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.use('/:bootcampId/courses' , courseRouter);
 
 router
     .route('/:id/image')
-    .put(protect , uploadBootcampImage);
+    .put(protect , authorize('publisher' , 'admin') , uploadBootcampImage);
 
 router
     .route('/radius/:zipcode/:distance')
@@ -29,12 +29,12 @@ router
 router
     .route('/')
     .get(advancedResults(Bootcamp , { path: 'courses' , select: 'title , description , tuition' }) , getBootcamps)
-    .post(protect , createNewBootcamp)
+    .post(protect , authorize('publisher' , 'admin') , createNewBootcamp)
 
 router
     .route('/:id')
     .get(getBootcampById)
-    .put(protect , updateBootcampById)
-    .delete(protect , deleteBootcampById);
+    .put(protect , authorize('publisher' , 'admin') , updateBootcampById)
+    .delete(protect , authorize('publisher' , 'admin') , deleteBootcampById);
 
 export default router
