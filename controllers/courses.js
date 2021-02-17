@@ -48,8 +48,12 @@ export const getCourseById = asyncHandler(async (req, res, next) => {
 //@access   Private
 export const createCourse = asyncHandler(async (req , res , next) => {
     const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+    req.body.user = req.user.id;
     if(!bootcamp) {
         return next(new ErrorResponse(`There is no bootcamp with id of ${req.params.id}` , 404));
+    }
+    if(bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized action' , 401));
     }
     const course = await Course.create(req.body);
     res.status(201).json({
@@ -66,6 +70,9 @@ export const updateCourseById = asyncHandler(async (req , res , next) => {
     let course = await Course.findById(req.params.id);
     if(!course) {
         return next(new ErrorResponse(`There is no course with id of ${req.params.id}` , 404));
+    }
+    if(course.user.toString() !== req.user.id && req.user,role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized actions' , 401));
     }
     course = await Course.findByIdAndUpdate(req.params.id , req.body , {
         new: true ,
@@ -85,6 +92,9 @@ export const deleteCourseById = asyncHandler(async (req, res, next) => {
     const course = await Course.findById(req.params.id);
     if(!course) {
         return next(new ErrorResponse(`There is no course with id of ${req.params.id}` , 404));
+    }
+    if(course.user.toString() !== req.user.id && req.user,role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized actions' , 401));
     }
     await course.remove();
     res.status(200).json({
