@@ -29,6 +29,11 @@ export const getBootcampById = asyncHandler(async (req , res , next) => {
 //@route    POST /api/v1/bootcamps
 //@access   Private
 export const createNewBootcamp = asyncHandler(async (req , res , next) => {
+    req.body.user = req.user._id;
+    const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id });
+    if(publishedBootcamp && req.user.role !== 'admin') {
+        return next(new ErrorResponse('You have published a bootcamp' , 400));
+    }
     const bootcamp = await Bootcamp.create(req.body);
     res.status(201).json({
         success: true ,
@@ -45,6 +50,9 @@ export const updateBootcampById = asyncHandler(async (req , res , next) => {
     let bootcamp = await Bootcamp.findById(req.params.id);
     if(!bootcamp) {
         return next(new ErrorResponse(`There is no resource with id ${req.params.id}` , 404))
+    }
+    if(bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized action' , 401));
     }
     bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id , req.body , {
         new: true ,
@@ -63,6 +71,9 @@ export const deleteBootcampById = asyncHandler(async (req , res , next) => {
     const bootcamp = await Bootcamp.findById(req.params.id);
     if(!bootcamp) {
         return next(new ErrorResponse(`There is no resource with id ${req.params.id}` , 404));
+    }
+    if(bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized action' , 401));
     }
     await bootcamp.remove();
     res.status(200).json({
@@ -104,6 +115,9 @@ export const uploadBootcampImage = asyncHandler(async (req , res , next) => {
     const bootcamp = await Bootcamp.findById(req.params.id);
     if(!bootcamp) {
         return next(new ErrorResponse(`There is no bootcamp with id of ${req.params.id}` , 404));
+    }
+    if(bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse('Unauthorized action' , 401));
     }
     if(!req.files) {
         return next(new ErrorResponse('Please upload an images file' , 400));
