@@ -6,6 +6,11 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser'
 import colors from 'colors';
 import bodyParser from 'body-parser'
+import mongoSanitize from 'express-mongo-sanitize'
+import helmet from 'helmet';
+import xss from 'xss-clean'
+import rateLimit from 'express-rate-limit'
+import hpp from 'hpp'
 import connectDB from './config/db.js';
 import bootcampRouter from './routes/bootcamps.js';
 import courseRouter from './routes/courses.js';
@@ -35,6 +40,17 @@ app.use(cookieParser());
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+app.use(mongoSanitize());
+app.use(helmet());
+app.use(xss());
+app.use(hpp());
+
+const limiter = rateLimit({
+    windowMs: 10 * 1000 * 60 ,
+    max: 100
+});
+app.use(limiter);
 
 app.use(fileupload());
 
