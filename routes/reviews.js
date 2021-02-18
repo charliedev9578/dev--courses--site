@@ -2,7 +2,9 @@ import express from 'express';
 import {
     getReviews ,
     getReviewById ,
-    createReview
+    createReview ,
+    updateReviewById ,
+    deleteReviewById
 } from '../controllers/reviews.js';
 
 import advancedResults from '../middleware/advancedResults.js';
@@ -22,6 +24,8 @@ router
 
 router
     .route('/:id')
-    .get(getReviewById);
+    .get(getReviewById)
+    .put(protect , authorize('user') , updateReviewById)
+    .delete(protect , authorize('user' , 'admin') , deleteReviewById);
 
 export default router
