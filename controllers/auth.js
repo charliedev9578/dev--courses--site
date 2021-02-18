@@ -1,8 +1,8 @@
+import crypto from 'crypto'
 import User from '../models/User.js';
 import ErrorResponse from '../utils/errorResponse.js';
 import asyncHandler from '../middleware/async.js';
 import sendEmail from '../utils//sendEmail.js'
-import crypto from 'crypto'
 
 //@desc     Register users
 //@route    POST /api/v1/auth/register
@@ -44,6 +44,7 @@ export const userLogin = asyncHandler(async (req, res, next) => {
     if (!matchPassword) {
         return next(new ErrorResponse('Invalid credential', 401));
     }
+    // console.log(user);
     sendTokenResponse(user, 200, res);
 });
 
