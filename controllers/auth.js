@@ -136,3 +136,43 @@ export const resetPassword = asyncHandler(async (req , res , next) => {
     await user.save({ validateBeforeSave: false });
     sendTokenResponse(user, 200, res);
 });
+
+//@desc     Update user details
+//@route    PUT/api/v1/auth/updatedetails
+//@access   Private
+export const updateDetails = asyncHandler(async (req , res , next) => {
+    const fieldsToUpdate = {
+        name: req.body.name ,
+        email: req.body.email
+    };
+
+    let user = await User.findById(req.user.id);
+
+    if(!user) {
+        return next(new ErrorResponse(`There is no user with id of` , 404));
+    }
+    user = await User.findById(req.user.id , fieldsToUpdate , {
+        new: true ,
+        runValidators: true
+    });
+    sendTokenResponse(user, 200, res);
+});
+
+//@desc     Update user password
+//@route    PUT/api/v1/auth/updatepassword
+//@access   Private
+export const updatePassword = asyncHandler(async (req , res , next) => {
+    const { oldPassword , newPassword } = req.body;
+    const user = await User.findById(req.user.id).select('+password');
+    if(!user) {
+        return next(new ErrorResponse(`There is no user with id of ${req.user.id}` , 404));
+    }
+
+    const matchPassword = await user.matchUserPassword(oldPassword);
+    if(!matchPassword) {
+        return next(new ErrorResponse('Please enter valid password' , 400));
+    }
+    user.password = newPassword;
+    user.save();
+    sendTokenResponse(user, 200, res);
+})

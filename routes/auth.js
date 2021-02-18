@@ -4,11 +4,21 @@ import {
     userLogin ,
     getMe ,
     forgotPassword ,
-    resetPassword
+    resetPassword ,
+    updateDetails ,
+    updatePassword
 } from '../controllers/auth.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
+
+router
+    .route('/updatepassword')
+    .put(protect , updatePassword);
+
+router
+    .route('/updatedetails')
+    .put(protect , updateDetails)
 
 router
     .route('/resetpassword/:resetToken')
