@@ -11,6 +11,7 @@ import bootcampRouter from './routes/bootcamps.js';
 import courseRouter from './routes/courses.js';
 import authRouter from './routes/auth.js';
 import userRouter from './routes/users.js';
+import reviewRouter from './routes/reviews.js';
 import errorHandler from './middleware/error.js';
 
 // dotenv.config({ path: './config/config.env' });
@@ -43,6 +44,7 @@ app.use('/api/v1/bootcamps' , bootcampRouter);
 app.use('/api/v1/courses' , courseRouter);
 app.use('/api/v1/auth' , authRouter);
 app.use('/api/v1/users' , userRouter);
+app.use('/api/v1/reviews' , reviewRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

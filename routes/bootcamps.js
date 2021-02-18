@@ -9,6 +9,7 @@ import {
     uploadBootcampImage
 } from '../controllers/bootcamps.js';
 import courseRouter from './courses.js';
+import reviewRouter from './reviews.js';
 import { protect , authorize } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -17,6 +18,7 @@ import advancedResults from '../middleware/advancedResults.js'
 import Bootcamp from '../models/Bootcamp.js';
 
 router.use('/:bootcampId/courses' , courseRouter);
+router.use('/:bootcampId/reviews' , reviewRouter);
 
 router
     .route('/:id/image')
