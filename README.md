@@ -1,5 +1,5 @@
 # **DevCamper API**
- Backend API for DevCamper application, which is a bootcamp directory website
+ > Backend API for DevCamper application, which is a bootcamp directory website
 
 ## **About author**
 ---
@@ -20,3 +20,5 @@
     # run in production mode
     npm run start
 ```
+- Version: 1.0.0
+- Licence: MIT
